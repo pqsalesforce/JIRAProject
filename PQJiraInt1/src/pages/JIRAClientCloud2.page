@@ -1,0 +1,27 @@
+<apex:page StandardController="case" extensions="JIRACaseExtension"  docType="html-5.0" id="thePage" action="{!loadCaseIssues}">
+    <script type="text/javascript">
+    	function myFunc1a(atest) {
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.JIRACaseExtension.updateCaseJiras}',
+                function(status){ console.log("Success callback for updateCaseJira"); });
+           }
+    </script>
+    
+    <script type="text/javascript">
+  	function refresh() {
+            Visualforce.remoting.Manager.invokeAction(
+                '{!$RemoteAction.JIRACaseExtension.refresh}',
+                function(status){ alert('2'); });
+           }
+    </script>
+    
+    <apex:form id="theForm"  >
+       <apex:pageBlock > 
+<!--       <apex:pageBlockButtons > -->
+           <input type="button" onclick="myFunc1a('test'); return false;"  value="myFunc1a" display="none"/> 
+           <apex:commandbutton onclick="refresh(); return false;"  value="Refresh" /> 
+<!--        </apex:pageBlockButtons>  -->
+       </apex:pageBlock> 
+   <c:JIRABugGEMS GEMSIssues="{!jIssues}" /> 
+   </apex:form>
+</apex:page>

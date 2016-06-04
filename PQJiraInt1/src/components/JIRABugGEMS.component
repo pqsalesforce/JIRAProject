@@ -1,0 +1,126 @@
+<apex:component controller="JIRACXIssueController" >
+   <apex:attribute name="GEMSIssues" type="JIRAIssues" assignTo="{!jIssues}" required="true" description="JIRA Objects" />
+        
+	<script type="text/javascript">
+    function myEdit(issueId) {
+        window.open('/'+issueId);
+    };
+
+    function myTab(panelId) {
+        if(document.getElementById(panelId).style.display == "none") {
+ 			document.getElementById(panelId).style.display = "block";
+ 		}else {
+ 			document.getElementById(panelId).style.display = "none";
+ 		}
+    };
+
+    function myRefresh(issueId, JIRAKey) {
+        alert('doing the refresh for ' + issueId + '/' + JIRAKey);
+    };
+
+    function myJIRA(JIRAKey) {
+        window.open('https://jira.proquest.com/browse/'+JIRAKey);
+    };
+
+    function myFunc1(atest) {
+        //alert('this is a function!');
+        console.log("in myFunc1");
+ 
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.JIRACXIssueController.setLastUpdate}',
+            function(status){ console.log("back from setLastUpdate"); });
+        
+        console.log("After remote call");
+ 
+        //alert('after myFunction!');
+     };
+
+    function doWatch(issueId, direction, userId) {
+        //alert(direction + 'ing the issue!');
+        console.log("in watch method");
+ 
+ 		if(direction === 'Watch'){
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.JIRACXIssueController.setWatcher}',issueId, userId,
+            function(status){ console.log("back from setWatcher"); });
+        }else{
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.JIRACXIssueController.unsetWatcher}',issueId, userId,
+            function(status){ console.log("back from unsetWatcher"); });
+        }
+        console.log("After watch remote call");
+ 
+        //alert('issue is now ' + direction + 'ed.');
+     };
+
+    </script>
+    
+   <!--<apex:form > -->
+  	    <apex:pageBlock > 
+           <apex:pageMessages />
+       <apex:repeat value="{!jIssues.issues}" var="issue" >
+           <input type="button" onClick="myTab('{!$Component.JIRAPanel}');" value="..." id="TabCollapse" /> 
+           <input type="button" onclick="myJIRA('{!issue.issue.JIRAKey__c}')"  value="GoTo" /> 
+           <input type="button" onClick="myEdit('{!issue.issue.id}')" value="Edit" id="IssueEdit" />
+           <input type="button" onclick="doWatch('{!issue.issue.id}','{!IF(issue.isWatching, 'UnWatch', 'Watch')}','{!$User.id}'); return false;"  value="{!IF(issue.isWatching, 'UnWatch', 'Watch')}" display="none"/> 
+           
+             <apex:outputText value="{!issue.issue.name}"  /> : 
+             <apex:outputText value="{!issue.issue.Summary__c}"  />
+           <br/>
+             <apex:outputPanel id="JIRAPanel">
+				
+                <apex:tabPanel switchType="client" selectedTab="default" id="theTabPanel" rerender="tab1,tab2,tab3,tab4" rendered="{!issue.collapsed}" >
+                    
+                    <apex:tab label="default" name="default" id="tab1" rendered="{!issue.collapsed}">
+                    <apex:pageBlockSection collapsible="true" columns="2">   
+<!--   
+						<apex:pageBlockSectionItem >
+	                        <apex:outputField value="{!issue.issue.Summary__c}" />
+                        </apex:pageBlockSectionItem>
+-->
+                       <apex:outputField style="color:blue; font-weight:bold" value="{!issue.issue.Priority__c}" />
+                       <apex:outputField value="{!issue.issue.JIRAStatus__c}" />
+                       <apex:outputField style="font-weight: bold;" value="{!issue.issue.Resolution__c}" />
+                       <apex:outputField value="{!issue.issue.JIRACreated__c}" />
+                       <apex:outputField value="{!issue.issue.JIRAUpdated__c}" />
+                        <apex:outputField value="{!issue.issue.Assignee__c}" ><apex:commandButton value="msg" onclick="alert('something');" /></apex:outputField>
+                    </apex:pageBlockSection>    
+                	</apex:tab>
+                <apex:tab label="description" name="Description" id="tab2" rendered="{!issue.collapsed}">
+                    <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.Description__c.Label}" />: <apex:outputText value="{!issue.issue.Description__c}" /><br/>
+   
+                </apex:tab>
+                <apex:tab label="frequency" name="Frequency" id="tab3" rendered="{!issue.collapsed}">
+                </apex:tab>
+                <apex:tab label="root Cause" name="root Cause" id="tab4" rendered="{!issue.collapsed}" disabled="{!issue.issue.Root_Cause_Analysis_Requested__c == false}">
+                </apex:tab>
+                <apex:tab label="Comments" name="Comments" id="tab5" rendered="{!issue.collapsed}" >
+                    <apex:pageBlockSection collapsible="true" columns="1">  
+                        <apex:repeat value="{!issue.issue.JIRACXIssueComments__r}" var="comment" >
+                            <apex:pageBlockSectionItem >
+                                <apex:outputText value="{!comment.Author__c}{!comment.JIRACreatedDate__c}" /> <apex:outputField value="{!comment.body__c}" />
+                            </apex:pageBlockSectionItem>
+                        </apex:repeat>
+                    </apex:pageBlockSection>
+                </apex:tab>
+                <apex:tab label="Watchers" name="Watchers" id="tab6" rendered="{!issue.collapsed}" >
+                    <apex:pageBlockSection collapsible="true" columns="2">  
+                        <apex:repeat value="{!issue.issue.JIRA_Watchers__r}" var="watcher" >
+                            <apex:pageBlockSectionItem > 
+                                <apex:outputField value="{!watcher.SFUsers__r.name}" /> 
+                                <apex:outputField value="{!watcher.createddate}" />
+                            </apex:pageBlockSectionItem> 
+                            <apex:pageBlockSectionItem > 
+                                <apex:outputText value="{!IF(watcher.useEmail__c, 'Email', '     ')}" /> 
+                                <apex:outputText value="{!IF(watcher.useChatter__c, 'Chatter', '       ')}" /> 
+                            </apex:pageBlockSectionItem> 
+                        </apex:repeat>
+                    </apex:pageBlockSection>
+                </apex:tab>
+                </apex:tabPanel>
+                 <br/>
+            </apex:outputPanel>
+       </apex:repeat>
+       </apex:pageBlock> 
+    <!-- </apex:form> -->
+</apex:component>

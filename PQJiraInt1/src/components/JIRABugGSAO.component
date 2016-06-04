@@ -1,0 +1,71 @@
+<apex:component controller="JIRACXIssueController" >
+
+   <apex:attribute name="GSAOBugs" type="JIRACaseController" assignTo="{!pageController}" required="true"
+       description="JIRA Sales Issue Controller" />
+        
+	<script type="text/javascript">
+    function myEdit(issueId) {
+        window.open('/'+issueId);
+    };
+    </script>
+    <script type="text/javascript">
+    function myTab(panelId) {
+        if(document.getElementById(panelId).style.display == "none") {
+ 			document.getElementById(panelId).style.display = "block";
+ 		}else {
+ 			document.getElementById(panelId).style.display = "none";
+ 		}
+    };
+    </script>
+    <script type="text/javascript">
+    function myRefresh(issueId, JIRAKey) {
+        alert('doing the refresh for ' + issueId + '/' + JIRAKey);
+    };
+    </script>
+    <script type="text/javascript">
+    function myJIRA(JIRAKey) {
+        window.open('https://jira.proquest.com/browse/'+JIRAKey);
+    };
+    </script>
+
+    
+   <apex:form > 
+       <apex:pageBlock >
+           <apex:pageMessages />
+           
+       <apex:repeat value="{!pageController.issues}" var="issue" >
+           <input type="button" onClick="myTab('{!$Component.JIRAPanel}');" value="..." id="TabCollapse" /> 
+           <input type="button" onclick="myJIRA('{!issue.issue.JIRAKey__c}')" ng-click="gotoJIRA()" value="GoTo" /> 
+           <input type="button" onClick="myEdit('{!issue.issue.id}')" value="Edit" id="IssueEdit" />
+           
+             <apex:outputText value="{!issue.issue.name}"  /> : 
+             <apex:outputText value="{!issue.issue.Summary__c}"  />
+           <br/>
+             <apex:outputPanel id="JIRAPanel">
+				
+                <apex:tabPanel switchType="client" selectedTab="default" id="theTabPanel" rerender="tab1,tab2,tab3,tab4" rendered="{!issue.collapsed}" >
+                    <!--<apex:pageBlockSection columns="2">-->
+                    <apex:tab label="default" name="default" id="tab1" rendered="{!collapsed}">
+                        <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.Priority__c.Label}" />: <apex:outputText value="{!issue.issue.Priority__c}" /><br/>
+                        <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.JIRAStatus__c.Label}" />: <apex:outputText value="{!issue.issue.JIRAStatus__c}" /><br/>
+                        <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.Resolution__c.Label}" />: <apex:outputText value="{!issue.issue.Resolution__c}" /><br/>
+                        <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.JIRACreated__c.Label}" />: <apex:outputText value="{!issue.issue.JIRACreated__c}" /><br/>
+                        <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.JIRAUpdated__c.Label}" />: <apex:outputText value="{!issue.issue.JIRAUpdated__c}" /><br/>
+                        <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.Assignee__c.Label}" />: <apex:outputText value="{!issue.issue.Assignee__c}" /><br/>
+                	</apex:tab>
+                    <!--</apex:pageBlockSection>    -->
+                <apex:tab label="description" name="Description" id="tab2" rendered="{!collapsed}">
+                    <apex:outputLabel value="{!$ObjectType.JIRACXIssue__c.fields.Description__c.Label}" />: <apex:outputText value="{!issue.issue.Description__c}" /><br/>
+   
+                </apex:tab>
+                <apex:tab label="frequency" name="Frequency" id="tab3" rendered="{!collapsed}">
+                </apex:tab>
+                <apex:tab label="root Cause" name="root Cause" id="tab4" rendered="{!collapsed}" disabled="{!issue.issue.Root_Cause_Analysis_Requested__c == false}">
+                </apex:tab>
+                </apex:tabPanel>
+                 <br/>
+            </apex:outputPanel>
+       </apex:repeat>
+       </apex:pageBlock>
+    </apex:form> 
+</apex:component>

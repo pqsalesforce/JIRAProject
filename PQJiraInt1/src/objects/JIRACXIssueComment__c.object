@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Follow</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>InDevelopment</deploymentStatus>
+    <description>Comments recorded in JIRA for an issue</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Author__c</fullName>
+        <description>JIRA comment author</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JIRA comment author</inlineHelpText>
+        <label>Author</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>JIRACreatedDate__c</fullName>
+        <description>JIRA comment creation date</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JIRA comment creation date</inlineHelpText>
+        <label>JIRACreatedDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>JIRAID__c</fullName>
+        <caseSensitive>false</caseSensitive>
+        <description>JIRA ID for the comment</description>
+        <externalId>true</externalId>
+        <inlineHelpText>JIRA ID for the comment</inlineHelpText>
+        <label>JIRAID</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>true</unique>
+    </fields>
+    <fields>
+        <fullName>JIRAIssueID__c</fullName>
+        <description>JIRA ID for the parent Issue</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JIRA ID for the parent Issue</inlineHelpText>
+        <label>JIRAIssueID</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>JIRAIssue__c</fullName>
+        <externalId>false</externalId>
+        <label>JIRACXIssue</label>
+        <referenceTo>JIRACXIssue__c</referenceTo>
+        <relationshipLabel>JIRACXIssueComments</relationshipLabel>
+        <relationshipName>JIRACXIssueComments</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>true</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>JIRAKey__c</fullName>
+        <description>External JIRA key for the issue owning this comment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>External JIRA key for the issue owning this comment</inlineHelpText>
+        <label>JIRAKey</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>JIRAUpdateDate__c</fullName>
+        <description>JIRA comment update date</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JIRA comment update date</inlineHelpText>
+        <label>JIRAUpdateDate</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>UpdateAuthor__c</fullName>
+        <description>JIRA comment update author</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JIRA comment update author</inlineHelpText>
+        <label>UpdateAuthor</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>body__c</fullName>
+        <description>JIRA Comment string</description>
+        <externalId>false</externalId>
+        <inlineHelpText>JIRA comment string</inlineHelpText>
+        <label>body</label>
+        <length>131072</length>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <label>JIRACXIssueComment</label>
+    <nameField>
+        <label>JIRACXIssueComment Name</label>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>JIRACXIssueComments</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+</CustomObject>
